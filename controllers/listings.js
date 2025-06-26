@@ -83,7 +83,7 @@ module.exports.search = async (req, res) => {
     .populate("owner");
   if (!list) {
     req.flash("error", "no listing found");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
   res.render("./listings/show.ejs", { list });
 };
