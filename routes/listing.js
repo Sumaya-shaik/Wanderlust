@@ -10,16 +10,6 @@ const upload = multer({ storage });
 
 router.get("/search", listingController.search);
 router.get("/filter", listingController.filter);
-router.get("/new", isLoggedIn, listingController.renderNewForm);
-
-//EDIT Route
-router.get(
-  "/:id/edit",
-  isLoggedIn,
-  isOwner,
-  wrapAsync(listingController.renderEditForm)
-);
-
 router
   .route("/")
   .get(wrapAsync(listingController.index))
@@ -30,7 +20,7 @@ router
     wrapAsync(listingController.createListing)
   );
 
-//New Route
+router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 router
   .route("/:id")
@@ -43,5 +33,13 @@ router
     wrapAsync(listingController.updateListing)
   )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
+
+//EDIT Route
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isOwner,
+  wrapAsync(listingController.renderEditForm)
+);
 
 module.exports = router;
