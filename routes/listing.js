@@ -8,17 +8,10 @@ const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
+const reviewRouter = require("./review.js");
+
 router.get("/search", listingController.search);
 router.get("/filter", listingController.filter);
-router
-  .route("/")
-  .get(wrapAsync(listingController.index))
-  .post(
-    isLoggedIn,
-    upload.single("listing[image]"),
-    validateListing,
-    wrapAsync(listingController.createListing)
-  );
 
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
@@ -41,5 +34,17 @@ router
     wrapAsync(listingController.updateListing)
   )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
+
+router.use("/:id/reviews", reviewRouter);
+
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.createListing)
+  );
 
 module.exports = router;
